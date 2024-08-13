@@ -161,6 +161,8 @@ export default class PrismaInstallationStore implements InstallationStore {
       }
     }
     if (row !== null) {
+      const userMatch = query.userId === row.userId;
+      
       logger?.debug(
         `#fetchInstallation found the installation data ${commonLogPart}`,
       );
@@ -178,14 +180,14 @@ export default class PrismaInstallationStore implements InstallationStore {
           } :
           undefined,
         enterpriseUrl: row.enterpriseUrl || undefined,
-        user: {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          id: row.userId!,
+        user: userMatch ? {
+          // Set user data if the userIDs match, otherwise it sets user data to null
+          id: row.userId,
           token: row.userToken || undefined,
           refreshToken: row.userRefreshToken || undefined,
           expiresAt: row.userTokenExpiresAt ? Math.floor(row.userTokenExpiresAt.getTime() / 1000) : undefined,
           scopes: row.userScopes?.split(','),
-        },
+      } : null,
         bot:
             row.botId && row.botUserId && row.botToken ?
               {
