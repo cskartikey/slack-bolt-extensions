@@ -162,7 +162,7 @@ export default class PrismaInstallationStore implements InstallationStore {
     }
     if (row !== null) {
       const userMatch = query.userId === row.userId;
-      
+
       logger?.debug(
         `#fetchInstallation found the installation data ${commonLogPart}`,
       );
@@ -187,7 +187,7 @@ export default class PrismaInstallationStore implements InstallationStore {
           refreshToken: row.userRefreshToken || undefined,
           expiresAt: row.userTokenExpiresAt ? Math.floor(row.userTokenExpiresAt.getTime() / 1000) : undefined,
           scopes: row.userScopes?.split(','),
-      } : null,
+        } : null,
         bot:
             row.botId && row.botUserId && row.botToken ?
               {
